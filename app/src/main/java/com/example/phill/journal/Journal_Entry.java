@@ -10,12 +10,10 @@ public class Journal_Entry implements Serializable {
     private Timestamp Timestamp;
 
     //  hold the data of our journal entries
-    public Journal_Entry(String id, String Title, String Content, String Mood, Timestamp timestamp){
-        Id = id;
+    public Journal_Entry( String Title, String Content, String Mood){
         title = Title;
         content = Content;
         mood = Mood;
-        Timestamp = timestamp;
     }
 
     // getter for all
