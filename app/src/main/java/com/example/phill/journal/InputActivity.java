@@ -21,7 +21,6 @@ public class InputActivity extends AppCompatActivity {
 
     }
 
-
     private class OkClicked implements View.OnClickListener {
         @Override
         public void onClick(View v) {
@@ -43,13 +42,5 @@ public class InputActivity extends AppCompatActivity {
         Journal_Entry entry = new Journal_Entry(title, content, mood);
         EntryDatabase.getInstance(this).insert(entry);
     }
-
-
-
-
-
-
-
 }
 
-//  should allow the user to input the contents of the journal entry

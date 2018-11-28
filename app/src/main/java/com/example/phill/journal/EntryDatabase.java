@@ -16,9 +16,9 @@ public class EntryDatabase extends SQLiteOpenHelper {
         super(context, name , factory, version );
     }
 
+    //
     public static EntryDatabase getInstance(Context context){
 
-        //if available
         if(EntryDatabase.instance == null){
              EntryDatabase.instance = new EntryDatabase(context,"entries", null ,1);
         }
@@ -33,6 +33,19 @@ public class EntryDatabase extends SQLiteOpenHelper {
         String  message = "CREATE TABLE " + "entries" + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT, mood TEXT , " +
                 "timestamp DATETIME default (datetime('now','localtime'))) ";
         db.execSQL(message);
+
+        // create a new ContentValues object
+        ContentValues contentvalue = new ContentValues();
+
+        contentvalue.put("title", "Hallo");
+        contentvalue.put("content", "Hallo");
+        contentvalue.put("mood", "Hallo");
+
+        // call insert and add the right parameters
+        db.insert("entries", null, contentvalue);
+
+
+
     }
 
     @Override
@@ -49,7 +62,6 @@ public class EntryDatabase extends SQLiteOpenHelper {
         SQLiteDatabase database = instance.getWritableDatabase();
         return database.rawQuery("SELECT * FROM "+ "entries", null );
     }
-
 
     public void insert(Journal_Entry newjournal){
 
@@ -71,7 +83,11 @@ public class EntryDatabase extends SQLiteOpenHelper {
 
     // detele a part of database with specific id
     public static void delete(long id){
+
+        // open a connection to the database
         SQLiteDatabase db = instance.getWritableDatabase();
+
+        // query that removes the entry with that id from the database
         db.delete("entries", "_id= " + id, null);
     }
 }
