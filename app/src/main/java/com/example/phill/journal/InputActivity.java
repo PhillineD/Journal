@@ -15,17 +15,14 @@ public class InputActivity extends AppCompatActivity {
         setContentView(R.layout.input_activity);
 
         Button ok = findViewById(R.id.ok);
-        ok.setOnClickListener(new SubmitOnClickListener());
-    }
 
-    // when clicked on ok, make a new instance en insert it to database
-    public void addEntry(String title, String mood, String content) {
-        Journal_Entry entry = new Journal_Entry(title, content, mood);
-        EntryDatabase.getInstance(this).insert(entry);
+        // when clicked on OK, call class OkClicked
+        ok.setOnClickListener(new OkClicked());
+
     }
 
 
-    private class SubmitOnClickListener implements View.OnClickListener {
+    private class OkClicked implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             EditText Etitle = findViewById(R.id.nieuw);
@@ -39,6 +36,12 @@ public class InputActivity extends AppCompatActivity {
             Intent intent = new Intent(InputActivity.this, MainActivity.class);
             startActivity(intent);
         }
+    }
+
+    // when clicked on ok, make a new instance en insert it to database
+    public void addEntry(String title, String mood, String content) {
+        Journal_Entry entry = new Journal_Entry(title, content, mood);
+        EntryDatabase.getInstance(this).insert(entry);
     }
 
 

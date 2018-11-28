@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 
 public class EntryDatabase extends SQLiteOpenHelper {
-    private static final String TABLE_NAME = "entries";
 
     //    the unique instance of the class is stored
     private static EntryDatabase instance;
@@ -21,7 +20,7 @@ public class EntryDatabase extends SQLiteOpenHelper {
 
         //if available
         if(EntryDatabase.instance == null){
-             EntryDatabase.instance = new EntryDatabase(context,TABLE_NAME, null ,1);
+             EntryDatabase.instance = new EntryDatabase(context,"entries", null ,1);
         }
         return EntryDatabase.instance;
 
@@ -31,7 +30,7 @@ public class EntryDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //  creates a table
-        String  message = "CREATE TABLE " + TABLE_NAME + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT, mood TEXT , " +
+        String  message = "CREATE TABLE " + "entries" + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT, mood TEXT , " +
                 "timestamp DATETIME default (datetime('now','localtime'))) ";
         db.execSQL(message);
     }
@@ -39,7 +38,7 @@ public class EntryDatabase extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 //          drops the entries table
-        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS "+ "entries");
 
 //        recreates it by calling
         onCreate(db );
@@ -48,7 +47,7 @@ public class EntryDatabase extends SQLiteOpenHelper {
     // select all info from database
     public static Cursor selectAll(EntryDatabase instance){
         SQLiteDatabase database = instance.getWritableDatabase();
-        return database.rawQuery("SELECT * FROM "+ TABLE_NAME, null );
+        return database.rawQuery("SELECT * FROM "+ "entries", null );
     }
 
 
@@ -66,13 +65,13 @@ public class EntryDatabase extends SQLiteOpenHelper {
         contentvalue.put("mood", newjournal.getMood());
 
         // call insert and add the right parameters
-        database.insert(TABLE_NAME, null, contentvalue);
+        database.insert("entries", null, contentvalue);
 
     }
 
     // detele a part of database with specific id
     public static void delete(long id){
         SQLiteDatabase db = instance.getWritableDatabase();
-        db.delete(TABLE_NAME, "_id= " + id, null);
+        db.delete("entries", "_id= " + id, null);
     }
 }

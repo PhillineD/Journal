@@ -5,9 +5,7 @@ import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -21,24 +19,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // when clicked on the pink button call newEntryOnClickListener(), to go to inputActivity
-        FloatingActionButton button = findViewById(R.id.floatingbutton);
-        button.setOnClickListener(new newEntryOnClickListener());
-
-        // when just clicked call EntryClickListener to go to DetailActivity
         ListView journallist = findViewById(R.id.listviewjournal);
-        journallist.setOnItemClickListener(new EntryClickListener());
-
-        // when long  clicked call EntryLongClickListener to go to delete that row
-        journallist.setOnItemLongClickListener(new EntryLongClickListener());
+        FloatingActionButton button = findViewById(R.id.floatingbutton);
 
         //  ensure that everything is in order
         db = EntryDatabase.getInstance(getApplicationContext());
+
+        // when clicked on the pink button call class PinkClick(), to go to inputActivity
+        button.setOnClickListener(new PinkClick());
+
+        // when long clicked call class LongClick to go to delete that row
+        journallist.setOnItemLongClickListener(new LongClick());
+
+        // when just clicked call class ShortClick to go to DetailActivity
+        journallist.setOnItemClickListener(new ShortClick());
+
 
         //  a list of Cursor objects in our adapter
         Cursor cursor = EntryDatabase.selectAll(db);
         adapter = new EntryAdapter(this, R.layout.entry_row, cursor);
         journallist.setAdapter(adapter);
+
+        // add example
+//        Journal_Entry example = new Journal_Entry("AppStudio","Pset6","Happy");
+//        db.getInstance(this).insert(example);
 
     }
 
@@ -58,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // when clicked on the pink button go to inputActivity
-    private class newEntryOnClickListener implements View.OnClickListener{
+    private class PinkClick implements View.OnClickListener{
         @Override
         public void onClick(View view) {
             Intent intentInput = new Intent(MainActivity.this, InputActivity.class);
@@ -66,28 +70,32 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // when user click to add new item to the journal
-    private class EntryClickListener implements AdapterView.OnItemClickListener{
+    // when user clicked short to go to the details
+    private class ShortClick implements AdapterView.OnItemClickListener{
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             Cursor clicked = (Cursor) adapterView.getItemAtPosition(i);
-            String title = clicked.getString(clicked.getColumnIndex("title"));
-            String content = clicked.getString(clicked.getColumnIndex("content"));
-            String mood = clicked.getString(clicked.getColumnIndex("mood"));
-            String timestamp = clicked.getString(clicked.getColumnIndex("timestamp"));
-
             Intent intent = new Intent(MainActivity.this , DetailActivity.class);
+
+            String title = clicked.getString(clicked.getColumnIndex("title"));
             intent.putExtra("title", title);
+
+            String content = clicked.getString(clicked.getColumnIndex("content"));
             intent.putExtra("content", content);
-            intent.putExtra("timestamp", timestamp);
+
+            String mood = clicked.getString(clicked.getColumnIndex("mood"));
             intent.putExtra("mood", mood);
+
+            String timestamp = clicked.getString(clicked.getColumnIndex("timestamp"));
+            intent.putExtra("timestamp", timestamp);
+
             startActivity(intent);
         }
     }
 
     // when user clicked long on the listview, delete it
-    private class EntryLongClickListener implements AdapterView.OnItemLongClickListener{
+    private class LongClick implements AdapterView.OnItemLongClickListener{
 
         @Override
         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {

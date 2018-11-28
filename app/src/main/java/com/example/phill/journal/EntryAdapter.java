@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 public class EntryAdapter extends ResourceCursorAdapter {
 
+    //    a constructor
     public EntryAdapter(Context context, int layout, Cursor cursor) {
         super(context, layout, cursor);
     }
