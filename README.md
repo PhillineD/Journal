@@ -4,7 +4,7 @@ An app that represents a journal.
 In this app, you should be able to view a list of your journal entries, and of course also add new ones. 
 
 
-An app that represents a journal. 
+Philline Dikker 123
 
 
 ![journal1](https://user-images.githubusercontent.com/43133057/49141178-506d0a00-f2f6-11e8-9d6b-9d3c15ef50c6.png)
